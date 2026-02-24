@@ -39,17 +39,19 @@ class Device(Base):
     project = relationship("Project", back_populates="devices")
     interfaces = relationship("Interface", back_populates="device", cascade="all, delete-orphan")
     vlans = relationship("DeviceVlan", back_populates="device", cascade="all, delete-orphan")
-    configurations = relationship("DeviceConfig", back_populates="device", cascade="all, delete-orphan")
+    snapshots = relationship("ConfigSnapshot", back_populates="device", cascade="all, delete-orphan")
 
-class DeviceConfig(Base):
-    __tablename__ = "device_configs"
+class ConfigSnapshot(Base):
+    __tablename__ = "config_snapshots"
     
     id = Column(String, primary_key=True, default=gen_uuid)
     device_id = Column(String, ForeignKey("devices.id", ondelete="CASCADE"))
-    content = Column(Text, nullable=False)
-    created_at = Column(DateTime, server_default=func.now())
+    raw_config = Column(Text, nullable=False)
+    config_hash = Column(String, nullable=False)
+    source = Column(String, default="manual") # 'manual' | 'ssh' | 'upload'
+    taken_at = Column(DateTime, server_default=func.now())
     
-    device = relationship("Device", back_populates="configurations")
+    device = relationship("Device", back_populates="snapshots")
 
 class Interface(Base):
     __tablename__ = "interfaces"

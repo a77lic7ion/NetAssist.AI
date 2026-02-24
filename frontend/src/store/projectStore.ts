@@ -19,6 +19,7 @@ interface ProjectState {
   deleteProject: (id: string) => Promise<void>;
   
   // Topology Actions
+  refreshDevices: () => Promise<void>;
   addDevice: (device: any) => Promise<void>;
   removeDevice: (id: string) => Promise<void>;
   addLink: (link: any) => Promise<void>;
@@ -136,6 +137,17 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       set(state => ({ links: state.links.filter(l => l.id !== id) }));
     } catch (err) {
       console.error(err);
+    }
+  },
+
+  refreshDevices: async () => {
+    const project = get().currentProject;
+    if (!project) return;
+    try {
+      const devices = await devicesApi.list(project.id);
+      set({ devices });
+    } catch (err) {
+      console.error('Failed to refresh devices', err);
     }
   }
 }));

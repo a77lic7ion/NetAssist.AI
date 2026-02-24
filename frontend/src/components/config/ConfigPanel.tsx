@@ -4,7 +4,7 @@ import { configsApi } from '../../api/configs';
 import { X, Save, FileText, Upload, Trash2 } from 'lucide-react';
 
 export const ConfigPanel: React.FC = () => {
-  const { devices, selectedDeviceId, selectDevice, removeDevice } = useProjectStore();
+  const { devices, selectedDeviceId, selectDevice, removeDevice, refreshDevices } = useProjectStore();
   const [config, setConfig] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -43,6 +43,7 @@ export const ConfigPanel: React.FC = () => {
     try {
       await configsApi.upload(selectedDeviceId, config);
       setStatus('Saved!');
+      await refreshDevices();
       setTimeout(() => setStatus(null), 2000);
     } catch (err) {
       console.error(err);
