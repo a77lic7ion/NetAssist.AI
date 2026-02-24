@@ -1,5 +1,22 @@
 import { apiClient } from './client';
 
+export interface Interface {
+  id: string;
+  name: string;
+  description?: string;
+  mode: string;
+  vlan_access?: number;
+  vlan_trunk_allowed?: any;
+  ip_address?: string;
+  ip_mask?: string;
+  state: string;
+}
+
+export interface DeviceVlan {
+  vlan_id: number;
+  name?: string;
+}
+
 export interface Device {
   id: string;
   project_id: string;
@@ -12,6 +29,8 @@ export interface Device {
   canvas_y: number;
   created_at: string;
   updated_at: string;
+  interfaces: Interface[];
+  vlans: DeviceVlan[];
 }
 
 export interface DeviceCreate {
