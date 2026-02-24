@@ -28,7 +28,7 @@ export const aiApi = {
   },
   
   testConnection: async (provider: string, base_url?: string, api_key?: string) => {
-    const response = await apiClient.post<{ success: boolean; message: string }>('/ai/test', {
+    const response = await apiClient.post<{ success: boolean; message: string; models?: string[] }>('/ai/test', {
       provider,
       base_url,
       api_key,

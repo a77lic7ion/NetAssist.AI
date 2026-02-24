@@ -34,9 +34,9 @@ async def list_models(provider: str):
 
 @router.post("/test", response_model=AITestResponse)
 async def test_connection(request: AITestRequest):
-    success, message = await bridge.test_provider_connection(
+    success, message, models = await bridge.test_provider_connection(
         provider=request.provider,
         base_url=request.base_url,
         api_key=request.api_key
     )
-    return AITestResponse(success=success, message=message)
+    return AITestResponse(success=success, message=message, models=models)

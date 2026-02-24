@@ -82,6 +82,13 @@ export const SettingsModal: React.FC = () => {
         settings.api_key
       );
       setTestResult(result);
+
+      if (result.success && result.models) {
+        setAvailableModels(result.models);
+        if (result.models.length > 0 && !result.models.includes(settings.model)) {
+          setSettings(prev => ({ ...prev, model: result.models![0] }));
+        }
+      }
     } catch (err) {
       setTestResult({ success: false, message: 'Connection failed' });
     } finally {

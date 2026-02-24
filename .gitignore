@@ -3,3 +3,10 @@
 /BLUEPRINT.md
 /IMPLEMENTATION.md
 /node_modules
+/backend/venv
+/__pycache__
+*.log
+*.db
+.DS_Store
+dist/
+build/

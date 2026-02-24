@@ -27,6 +27,7 @@ class AITestRequest(BaseModel):
 class AITestResponse(BaseModel):
     success: bool
     message: str
+    models: Optional[List[str]] = None
 
 # --- Projects ---
 class ProjectBase(BaseModel):

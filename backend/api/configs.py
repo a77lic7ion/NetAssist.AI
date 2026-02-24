@@ -11,7 +11,7 @@ import json
 router = APIRouter(prefix="/configs", tags=["configs"])
 
 async def parse_and_update_device(device_id: str, config_content: str, db: AsyncSession):
-    parse = CiscoConfParse(config_content.splitlines(), factory=True)
+    parse = CiscoConfParse(config_content.splitlines())
 
     # Get device
     result = await db.execute(select(orm.Device).where(orm.Device.id == device_id))
@@ -25,8 +25,9 @@ async def parse_and_update_device(device_id: str, config_content: str, db: Async
         device.hostname = hostname_objs[0].text.split()[1]
 
     # Try to extract Model and Vendor from comments or other info
-    for line in config_content.splitlines():
+    for line in config_content.splitlines()[:100]:
         line = line.strip()
+        # Custom markers in comments
         if line.startswith('!') and ':' in line:
             parts = line[1:].split(':', 1)
             key = parts[0].strip().lower()
@@ -35,6 +36,21 @@ async def parse_and_update_device(device_id: str, config_content: str, db: Async
                 device.vendor = val
             elif key == 'model':
                 device.platform = val
+
+        # Heuristics for Cisco
+        if 'Cisco IOS Software' in line or 'Cisco Catalyst' in line:
+            device.vendor = 'Cisco'
+
+        if 'Software (C9300' in line:
+            device.platform = 'Catalyst 9300'
+        elif 'Software (C9200' in line:
+            device.platform = 'Catalyst 9200'
+        elif 'Software (C9500' in line:
+            device.platform = 'Catalyst 9500'
+        elif 'Software (ISR' in line:
+            device.platform = 'ISR'
+        elif 'Software (ASR' in line:
+            device.platform = 'ASR'
 
     # 2. Interfaces
     await db.execute(delete(orm.Interface).where(orm.Interface.device_id == device_id))
@@ -53,12 +69,12 @@ async def parse_and_update_device(device_id: str, config_content: str, db: Async
         state = "up"
 
         # Check description
-        desc_objs = intf_obj.re_search_children(r'^\s+description\s+')
+        desc_objs = intf_obj.find_child_objects(r'^\s+description\s+')
         if desc_objs:
             description = desc_objs[0].text.strip().replace('description ', '')
 
         # Check IP
-        ip_objs = intf_obj.re_search_children(r'^\s+ip\s+address\s+')
+        ip_objs = intf_obj.find_child_objects(r'^\s+ip\s+address\s+')
         if ip_objs:
             parts = ip_objs[0].text.strip().split()
             if len(parts) >= 4:
@@ -68,16 +84,16 @@ async def parse_and_update_device(device_id: str, config_content: str, db: Async
                     first_ip = ip_address
 
         # Check shutdown
-        if intf_obj.re_search_children(r'^\s+shutdown'):
+        if intf_obj.find_child_objects(r'^\s+shutdown'):
             state = "down"
 
         # Check switchport mode
-        mode_objs = intf_obj.re_search_children(r'^\s+switchport\s+mode\s+')
+        mode_objs = intf_obj.find_child_objects(r'^\s+switchport\s+mode\s+')
         if mode_objs:
             mode = mode_objs[0].text.strip().split()[-1]
 
         # Check access vlan
-        access_vlan_objs = intf_obj.re_search_children(r'^\s+switchport\s+access\s+vlan\s+')
+        access_vlan_objs = intf_obj.find_child_objects(r'^\s+switchport\s+access\s+vlan\s+')
         if access_vlan_objs:
             try:
                 vlan_access = int(access_vlan_objs[0].text.strip().split()[-1])
@@ -85,7 +101,7 @@ async def parse_and_update_device(device_id: str, config_content: str, db: Async
                 pass
 
         # Check trunk vlans
-        trunk_vlan_objs = intf_obj.re_search_children(r'^\s+switchport\s+trunk\s+allowed\s+vlan\s+')
+        trunk_vlan_objs = intf_obj.find_child_objects(r'^\s+switchport\s+trunk\s+allowed\s+vlan\s+')
         if trunk_vlan_objs:
             vlan_str = trunk_vlan_objs[0].text.strip().split()[-1]
             vlans = []
@@ -130,7 +146,7 @@ async def parse_and_update_device(device_id: str, config_content: str, db: Async
             continue
 
         vlan_name = ""
-        name_objs = vlan_obj.re_search_children(r'^\s+name\s+')
+        name_objs = vlan_obj.find_child_objects(r'^\s+name\s+')
         if name_objs:
             vlan_name = name_objs[0].text.strip().replace('name ', '')
 

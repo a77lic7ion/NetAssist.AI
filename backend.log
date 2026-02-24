@@ -1,0 +1,44 @@
+INFO:     Started server process [43108]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8742 (Press CTRL+C to quit)
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:39532 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:39546 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39562 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39534 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39534 - "GET /api/v1/ai/settings HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:33538 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:33554 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33544 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33554 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33554 - "OPTIONS /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33544 - "POST /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33544 - "GET /api/v1/projects/4e57b3c6-f262-48d1-b8f1-6bdf8592ed47 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33544 - "GET /api/v1/devices/4e57b3c6-f262-48d1-b8f1-6bdf8592ed47 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33544 - "GET /api/v1/links/4e57b3c6-f262-48d1-b8f1-6bdf8592ed47 HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:46548 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:46572 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46556 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46572 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46572 - "OPTIONS /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46556 - "POST /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46556 - "GET /api/v1/projects/841b91a9-9a74-495c-8b3b-175cfc55a7bb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46556 - "GET /api/v1/devices/841b91a9-9a74-495c-8b3b-175cfc55a7bb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46556 - "GET /api/v1/links/841b91a9-9a74-495c-8b3b-175cfc55a7bb HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:40924 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+Error fetching Ollama models: All connection attempts failed
+INFO:     127.0.0.1:40954 - "GET /api/v1/ai/models/ollama HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40938 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40954 - "GET /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40954 - "OPTIONS /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40938 - "POST /api/v1/projects/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40938 - "GET /api/v1/projects/8d34927e-c75c-4620-90ee-49d0754ae9d9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40938 - "GET /api/v1/devices/8d34927e-c75c-4620-90ee-49d0754ae9d9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40938 - "GET /api/v1/links/8d34927e-c75c-4620-90ee-49d0754ae9d9 HTTP/1.1" 200 OK
