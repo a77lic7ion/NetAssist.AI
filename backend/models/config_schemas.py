@@ -8,8 +8,10 @@ class ConfigUpload(BaseModel):
 class DeviceConfig(BaseModel):
     id: str
     device_id: str
-    content: str
-    created_at: datetime
+    raw_config: str
+    config_hash: str
+    source: str
+    taken_at: datetime
 
     class Config:
         from_attributes = True

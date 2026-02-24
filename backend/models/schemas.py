@@ -44,6 +44,38 @@ class Project(ProjectBase):
     class Config:
         from_attributes = True
 
+# --- Interfaces ---
+class Interface(BaseModel):
+    id: str
+    name: str
+    description: Optional[str] = None
+    mode: str
+    vlan_access: Optional[int] = None
+    vlan_trunk_allowed: Optional[Any] = None
+    ip_address: Optional[str] = None
+    ip_mask: Optional[str] = None
+    state: str
+
+    @field_validator('vlan_trunk_allowed', mode='before')
+    def parse_vlan_list(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except:
+                return []
+        return v
+
+    class Config:
+        from_attributes = True
+
+# --- VLAN Database ---
+class DeviceVlan(BaseModel):
+    vlan_id: int
+    name: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
 # --- Devices ---
 class DeviceBase(BaseModel):
     hostname: str
@@ -64,6 +96,8 @@ class Device(DeviceBase):
     config_hash: Optional[str] = None
     created_at: datetime
     updated_at: datetime
+    interfaces: List[Interface] = []
+    vlans: List[DeviceVlan] = []
 
     class Config:
         from_attributes = True
